@@ -5,15 +5,15 @@ from app import app
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Miguel'}
+    user = {'username': 'Radio'}
     posts = [
         {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
+            'author': {'username': 'Radio'},
+            'body': 'why is everyone not bothered about mother earth'
         },
         {
             'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
+            'body': 'save earth for the next generation'
         }
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
