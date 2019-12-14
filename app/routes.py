@@ -130,6 +130,7 @@ def user(username):
     page = request.args.get('page', 1, type=int)
     posts = user.posts.order_by(Post.timestamp.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
+    
     next_url = url_for('user', username=user.username, page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('user', username=user.username, page=posts.prev_num) \
@@ -145,14 +146,32 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
+        current_user.education = form.education.data #
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+        form.education = form.education.data
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+# @app.route('/education', methods=['GET', 'POST'])
+# @login_required
+# def education():
+#     form = EditProfileForm(current_user.username)
+#     if form.validate_on_submit():
+#         current_user.username = form.username.data
+#         current_user.about_me = form.about_me.data
+#         db.session.commit()
+#         flash('Your changes have been saved.')
+#         return redirect(url_for('edit_profile'))
+#     elif request.method == 'GET':
+#         form.username.data = current_user.username
+#         form.about_me.data = current_user.about_me
+#     return render_template('edit_profile.html', title='Edit Profile',
+#                            form=form)
 
 
 @app.route('/follow/<username>')
